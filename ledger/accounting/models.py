@@ -43,9 +43,9 @@ VIEW_SQL_ACCOUNT_LEDGER ="""
 
 
 class AccountLedgers(pg.View):
-    account = models.ForeignKey(Account, on_delete=models.PROTECT)
+    account = models.ForeignKey(Account, on_delete=models.DO_NOTHING)
     timestamp = models.DateTimeField()
-    entry = models.ForeignKey(Entries, primary_key=True, on_delete=models.PROTECT)
+    entry = models.ForeignKey(Entries, primary_key=True, on_delete=models.DO_NOTHING)
     amount = models.DecimalField(max_digits=20, decimal_places=2, validators=[validate_positive_amount])
 
     sql = VIEW_SQL_ACCOUNT_LEDGER
@@ -75,7 +75,7 @@ VIEW_SQL_ACCOUNT_BALANCE = """
 
 class AccountBalance(pg.MaterializedView):
     concurrent_index = 'account_id, timestamp'
-    account = models.ForeignKey(Account, primary_key=True, on_delete=models.PROTECT)
+    account = models.ForeignKey(Account, primary_key=True, on_delete=models.DO_NOTHING)
     timestamp = models.DateTimeField()
     balance = models.DecimalField(max_digits=20, decimal_places=2)
 
