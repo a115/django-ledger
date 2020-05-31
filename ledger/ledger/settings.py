@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
+    'django_pgviews',
+    'accounting',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +84,7 @@ DATABASES = {
         "PASSWORD": os.environ["PG_PASS"],
         "HOST": os.environ.get("PG_HOST", "localhost"),
         "CONN_MAX_AGE": 3600,
-        "PORT": "5431",
+        "PORT": os.environ.get("PG_PORT", "5432"),
     }
 }
 
@@ -115,7 +118,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
