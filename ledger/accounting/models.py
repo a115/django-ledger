@@ -22,7 +22,6 @@ class Entries(models.Model):
     class Meta:
         indexes = [models.Index(fields=['credit', 'debit'])]
 
-
 VIEW_SQL_ACCOUNT_LEDGER ="""
 	SELECT
 		accounting_entries.credit_id AS account_id,
@@ -41,7 +40,6 @@ VIEW_SQL_ACCOUNT_LEDGER ="""
 		accounting_entries;
     """
 
-
 class AccountLedgers(pg.View):
     account = models.ForeignKey(Account, on_delete=models.DO_NOTHING)
     timestamp = models.DateTimeField()
@@ -52,7 +50,7 @@ class AccountLedgers(pg.View):
 
     class Meta:
         managed = False
-        db_table = 'account_ledgers_view'
+        db_table = 'account_ledgers'
 
 VIEW_SQL_ACCOUNT_BALANCE = """
     SELECT
@@ -62,14 +60,14 @@ VIEW_SQL_ACCOUNT_BALANCE = """
     FROM (
         SELECT
             accounting_account.id as account_id,
-            account_ledgers_view.timestamp::date as tdate,
-            COALESCE(sum(account_ledgers_view.amount), 0.0) as day_end
+            account_ledgers.timestamp::date as tdate,
+            COALESCE(sum(account_ledgers.amount), 0.0) as day_end
         FROM
             accounting_account
             LEFT OUTER JOIN
-            account_ledgers_view
-            ON accounting_account.id = account_ledgers_view.account_id
-        GROUP BY accounting_account.id, account_ledgers_view.timestamp::date
+            account_ledgers
+            ON accounting_account.id = account_ledgers.account_id
+        GROUP BY accounting_account.id, account_ledgers.timestamp::date
     ) AS daily_balances;
     """
 
@@ -84,19 +82,3 @@ class AccountBalance(pg.MaterializedView):
     class Meta:
         managed = False
         db_table = 'account_balances'
-
-# @receiver(post_save, sender=Entries)
-# def trigger_fix_balance_entries_on_save(sender, action=None, instance=None, **kwargs):
-#     AccountBalance.refresh()
-#
-# @receiver(post_delete, sender=Entries)
-# def trigger_fix_balance_entries_on_delete(sender, action=None, instance=None, **kwargs):
-#     AccountBalance.refresh()
-#
-# @receiver(post_save, sender=Account)
-# def trigger_fix_balance_accounts_on_save(sender, action=None, instance=None, **kwargs):
-#     AccountBalance.refresh()
-#
-# @receiver(post_delete, sender=Account)
-# def trigger_fix_balance_accounts_on_delete(sender, action=None, instance=None, **kwargs):
-#     AccountBalance.refresh()

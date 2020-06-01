@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('amount', models.DecimalField(decimal_places=2, max_digits=20, validators=[accounting.models.validate_positive_amount])),
             ],
             options={
-                'db_table': 'account_ledgers_view',
+                'db_table': 'account_ledgers',
                 'managed': False,
             },
         ),
