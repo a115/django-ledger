@@ -85,18 +85,18 @@ class AccountBalance(pg.MaterializedView):
         managed = False
         db_table = 'account_balances'
 
-@receiver(post_save, sender=Entries)
-def trigger_fix_balance_entries_on_save(sender, action=None, instance=None, **kwargs):
-    AccountBalance.refresh()
-
-@receiver(post_delete, sender=Entries)
-def trigger_fix_balance_entries_on_delete(sender, action=None, instance=None, **kwargs):
-    AccountBalance.refresh()
-
-@receiver(post_save, sender=Account)
-def trigger_fix_balance_accounts_on_save(sender, action=None, instance=None, **kwargs):
-    AccountBalance.refresh()
-
-@receiver(post_delete, sender=Account)
-def trigger_fix_balance_accounts_on_delete(sender, action=None, instance=None, **kwargs):
-    AccountBalance.refresh()
+# @receiver(post_save, sender=Entries)
+# def trigger_fix_balance_entries_on_save(sender, action=None, instance=None, **kwargs):
+#     AccountBalance.refresh()
+#
+# @receiver(post_delete, sender=Entries)
+# def trigger_fix_balance_entries_on_delete(sender, action=None, instance=None, **kwargs):
+#     AccountBalance.refresh()
+#
+# @receiver(post_save, sender=Account)
+# def trigger_fix_balance_accounts_on_save(sender, action=None, instance=None, **kwargs):
+#     AccountBalance.refresh()
+#
+# @receiver(post_delete, sender=Account)
+# def trigger_fix_balance_accounts_on_delete(sender, action=None, instance=None, **kwargs):
+#     AccountBalance.refresh()
