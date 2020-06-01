@@ -6,7 +6,7 @@ from django.db import models
 
 # TODO: create and move to utils folders
 def validate_positive_amount(value: Decimal) -> bool:
-    return value >= Decimal(0)
+    return value > Decimal(0)
 
 # Create your models here.
 class Account(models.Model):
