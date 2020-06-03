@@ -74,7 +74,7 @@ VIEW_SQL_ACCOUNT_BALANCE = """
 class AccountBalance(pg.MaterializedView):
     concurrent_index = 'account_id, timestamp'
     account = models.ForeignKey(Account, primary_key=True, on_delete=models.DO_NOTHING)
-    timestamp = models.DateTimeField()
+    timestamp = models.DateField()
     balance = models.DecimalField(max_digits=20, decimal_places=2)
 
     sql = VIEW_SQL_ACCOUNT_BALANCE
