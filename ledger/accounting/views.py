@@ -21,6 +21,10 @@ def get_balance_by_date(request, pk):
     except Account.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     date = request.data['date']
-    balance = AccountBalance.objects.get(account=account, timestamp=date)
+    try:
+        balance = AccountBalance.objects.get(account=account, timestamp=date)
+    except AccountBalance.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND,
+                        data={"error": "There is not entry on date {}".format(date)})
     serialize_balance = AccountBalanceSerializer(balance)
     return Response(serialize_balance.data)
