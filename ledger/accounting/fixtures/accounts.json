@@ -1,0 +1,9 @@
+[
+{
+    "model": "accounting.account",
+    "pk": 1,
+    "fields": {
+        "name": "Account one"
+    }
+}
+]
